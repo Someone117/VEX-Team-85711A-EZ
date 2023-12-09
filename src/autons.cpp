@@ -6,6 +6,7 @@
 #include "EZ-Template/util.hpp"
 #include "constants.hpp"
 #include "main.h"
+#include "pros/adi.hpp"
 #include "pros/motors.hpp"
 #include "pros/rtos.hpp"
 
@@ -38,16 +39,27 @@ void exit_condition_defaults() {
 }
 
 void cataDown() {
+  pros::ADIAnalogIn pot(POT);
+  bool cataDown = pot.get_value() > 2250;
+  pros::Motor cata(CATA);
+  while (!cataDown) {
+    cata = CATAVOLTAGE;
+    pros::delay(util::DELAY_TIME);
+    cataDown = pot.get_value() > 2200;
+  }
+  cata.brake();
 }
 
 void cataUp() {
   pros::Motor cata(CATA);
-  pros::ADIDigitalIn limit_switch(LIMIT);
-  bool cataDown = limit_switch.get_value();
+  // pros::ADIDigitalIn limit_switch(LIMIT);
+  pros::ADIAnalogIn pot(POT);
+  bool cataDown = pot.get_value() > 2250;  // we are using the limit switch
+
   while (cataDown) {
     cata = CATAMAXVOLTAGE;
     pros::delay(util::DELAY_TIME);
-    cataDown = limit_switch.get_value();
+    cataDown = pot.get_value() > 2250;
   }
   cata = 0;
 }
@@ -59,15 +71,15 @@ void autoAttack() {
   // drive forward to the center of the field
   chassis.set_drive_pid(55, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(10, DRIVE_SPEED / 2);
+  chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees
   chassis.wait_drive();
   pros::Motor intake(INTAKE);
   // score triball given
   intake = -127;
-  pros::delay(1000);
+  pros::delay(1500);
   intake = 0;
+  chassis.set_drive_pid(11, DRIVE_SPEED / 2);
+  chassis.wait_drive();
 }
 
 // remove triball that is in the match load area
@@ -76,14 +88,15 @@ void autoAttack() {
 // start with no triball
 void autoDefense() {
   // make sure that the cata is down so we can load the triball
-  pros::ADIDigitalIn limit_switch(LIMIT);
-  bool cataDown = limit_switch.get_value();
+  // pros::ADIDigitalIn limit_switch(LIMIT);
+  pros::ADIAnalogIn pot(POT);
+  bool cataDown = pot.get_value() > 2250;
   pros::Motor cata(CATA);
   pros::Motor intake(INTAKE);
   while (!cataDown) {
     cata = CATAVOLTAGE;
     pros::delay(util::DELAY_TIME);
-    cataDown = limit_switch.get_value();
+    cataDown = pot.get_value() > 2250;
   }
   cata.brake();
 
@@ -115,53 +128,53 @@ void autoDefense() {
   chassis.set_pid_constants(&chassis.headingPID, 0, 0, 0, 0);
 }
 
-void awp() {
-  // do both autoAttack and autoDefense
-  // start for autoAttack on defense side
+// void awp() {
+//   // do both autoAttack and autoDefense
+//   // start for autoAttack on defense side
 
-  // to center of field
-  chassis.set_drive_pid(48, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(24, DRIVE_SPEED);
-  chassis.wait_until(12);
-  // shoot async
-  pros::Task cataUpTask(cataUp);
-  chassis.wait_drive();
-  chassis.set_drive_pid(-24, DRIVE_SPEED);
-  chassis.wait_drive();
-  cataUpTask.join();                  //  make sure it has shot
-  pros::Task cataDownTask(cataDown);  // async cata down
-  // go back to the match load area
-  chassis.set_turn_pid(-90, TURN_SPEED);
-  chassis.set_drive_pid(-24, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(-45, TURN_SPEED);
-  chassis.wait_drive();
-  pros::Motor intake(INTAKE);
-  intake = -127;
-  chassis.set_drive_pid(-24, DRIVE_SPEED);
-  chassis.wait_drive();
-  pros::delay(1000);
-  intake = 0;                             // intake triball
-  chassis.set_drive_pid(6, DRIVE_SPEED);  // get to the rod
-  chassis.wait_drive();
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(12, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(12, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(-90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(72, DRIVE_SPEED);
-  chassis.wait_until(60);
-  chassis.set_max_speed(DRIVE_SPEED / 4);  // slow down so we are there
-  chassis.wait_drive();
-}
+//   // to center of field
+//   chassis.set_drive_pid(48, DRIVE_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_turn_pid(90, TURN_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_drive_pid(24, DRIVE_SPEED);
+//   chassis.wait_until(12);
+//   // shoot async
+//   pros::Task cataUpTask(cataUp);
+//   chassis.wait_drive();
+//   chassis.set_drive_pid(-24, DRIVE_SPEED);
+//   chassis.wait_drive();
+//   cataUpTask.join();                  //  make sure it has shot
+//   pros::Task cataDownTask(cataDown);  // async cata down
+//   // go back to the match load area
+//   chassis.set_turn_pid(-90, TURN_SPEED);
+//   chassis.set_drive_pid(-24, DRIVE_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_turn_pid(-45, TURN_SPEED);
+//   chassis.wait_drive();
+//   pros::Motor intake(INTAKE);
+//   intake = -127;
+//   chassis.set_drive_pid(-24, DRIVE_SPEED);
+//   chassis.wait_drive();
+//   pros::delay(1000);
+//   intake = 0;                             // intake triball
+//   chassis.set_drive_pid(6, DRIVE_SPEED);  // get to the rod
+//   chassis.wait_drive();
+//   chassis.set_turn_pid(45, TURN_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_drive_pid(12, DRIVE_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_turn_pid(90, TURN_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_drive_pid(12, DRIVE_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_turn_pid(-90, TURN_SPEED);
+//   chassis.wait_drive();
+//   chassis.set_drive_pid(72, DRIVE_SPEED);
+//   chassis.wait_until(60);
+//   chassis.set_max_speed(DRIVE_SPEED / 4);  // slow down so we are there
+//   chassis.wait_drive();
+// }
 
 // setup like autoDefense, with triballs galore
 void autoSkills() {
@@ -175,7 +188,7 @@ void autoSkills() {
   cata = 0;
   pros::Task cataDownTask(cataDown);  // down so we can go under
   // go under
-  chassis.set_drive_pid(6, DRIVE_SPEED);
+  chassis.set_drive_pid(-6, DRIVE_SPEED);
   chassis.set_turn_pid(45, TURN_SPEED);  // get away from the match load area and turn to correct heading
 }
 

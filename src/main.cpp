@@ -112,7 +112,7 @@ void initialize() {
   inake_initializer.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   cata_initializer.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);  // TODO: test
 
-  pros::ADIDigitalIn limit_initializer(LIMIT);
+  // pros::ADIDigitalIn limit_initializer(LIMIT);
   pros::ADIAnalogIn pot_initializer(POT);
 
   // Initialize chassis and auton selector
@@ -174,8 +174,7 @@ void arcade_standard2(bool reverse) {
   int fwd_stick, turn_stick;
   // Put the joysticks through the curve function
   fwd_stick = chassis.left_curve_function(master.get_analog(ANALOG_LEFT_Y));
-  turn_stick =
-      chassis.right_curve_function(master.get_analog(ANALOG_RIGHT_X));
+  turn_stick = chassis.right_curve_function(master.get_analog(ANALOG_RIGHT_X));
 
   turn_stick = -turn_stick;
   if (reverse)
@@ -183,6 +182,17 @@ void arcade_standard2(bool reverse) {
 
   // Set robot to l_stick and r_stick, check joystick threshold, set active
   // brake
+
+  // adjust the speeds
+
+  if (!master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+    fwd_stick *= FORWARD_FACTOR;
+    turn_stick *= TURN_FACTOR;
+  } else {
+    fwd_stick *= TURBO_FORWARD_FACTOR;
+    turn_stick *= TURBO_TURN_FACTOR;
+  }
+
   chassis.joy_thresh_opcontrol(fwd_stick + turn_stick, fwd_stick - turn_stick);
 }
 
@@ -206,7 +216,7 @@ void opcontrol() {
   bool flipDrive = false;
   bool state = LOW;
   pros::ADIDigitalOut wings(WINGS);
-  pros::ADIDigitalIn limit_switch(LIMIT);
+  // pros::ADIDigitalIn limit_switch(LIMIT);
   pros::ADIAnalogIn pot(POT);
 
   pros::Motor intake(INTAKE);
@@ -237,8 +247,8 @@ void opcontrol() {
     }
 
     // cata
-    cataDown = limit_switch.get_value();
-    cataDown = pot.get_value() > 2250;  // we are using the limit switch
+    // cataDown = limit_switch.get_value();
+    cataDown = pot.get_value() > 2200;  // we are using the limit switch
 
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       cata = CATAMAXVOLTAGE;  // fire and continuous fire
