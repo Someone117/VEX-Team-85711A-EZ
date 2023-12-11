@@ -40,12 +40,12 @@ void exit_condition_defaults() {
 
 void cataDown() {
   pros::ADIAnalogIn pot(POT);
-  bool cataDown = pot.get_value() > 2250;
+  bool cataDown = pot.get_value() > CATA_THRESHOLD;
   pros::Motor cata(CATA);
   while (!cataDown) {
     cata = CATAVOLTAGE;
     pros::delay(util::DELAY_TIME);
-    cataDown = pot.get_value() > 2200;
+    cataDown = pot.get_value() > CATA_THRESHOLD;
   }
   cata.brake();
 }
@@ -54,12 +54,12 @@ void cataUp() {
   pros::Motor cata(CATA);
   // pros::ADIDigitalIn limit_switch(LIMIT);
   pros::ADIAnalogIn pot(POT);
-  bool cataDown = pot.get_value() > 2250;  // we are using the limit switch
+  bool cataDown = pot.get_value() > CATA_THRESHOLD;  // we are using the limit switch
 
   while (cataDown) {
     cata = CATAMAXVOLTAGE;
     pros::delay(util::DELAY_TIME);
-    cataDown = pot.get_value() > 2250;
+    cataDown = pot.get_value() > CATA_THRESHOLD;
   }
   cata = 0;
 }
@@ -90,13 +90,13 @@ void autoDefense() {
   // make sure that the cata is down so we can load the triball
   // pros::ADIDigitalIn limit_switch(LIMIT);
   pros::ADIAnalogIn pot(POT);
-  bool cataDown = pot.get_value() > 2250;
+  bool cataDown = pot.get_value() > CATA_THRESHOLD;
   pros::Motor cata(CATA);
   pros::Motor intake(INTAKE);
   while (!cataDown) {
     cata = CATAVOLTAGE;
     pros::delay(util::DELAY_TIME);
-    cataDown = pot.get_value() > 2250;
+    cataDown = pot.get_value() > CATA_THRESHOLD;
   }
   cata.brake();
 
