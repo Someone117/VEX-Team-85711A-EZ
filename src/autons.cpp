@@ -11,7 +11,7 @@
 #include "pros/rtos.hpp"
 
 /////
-// For instalattion, upgrading, documentations and tutorials, check out website!
+// For instalation, upgrading, documentations and tutorials, check out website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
