@@ -248,7 +248,7 @@ void opcontrol() {
 
     // cata
     // cataDown = limit_switch.get_value();
-    cataDown = pot.get_value() > 2200;  // we are using the limit switch
+    cataDown = pot.get_value() > CATA_THRESHOLD;  // we are using the limit switch
 
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       cata = CATAMAXVOLTAGE;  // fire and continuous fire
