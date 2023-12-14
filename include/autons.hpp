@@ -1,13 +1,8 @@
 #pragma once
 
-#include "EZ-Template/auton_selector.hpp"
-#include "EZ-Template/drive/drive.hpp"
+#include "lemlib/api.hpp"
 
-extern Drive chassis;
-
-void exit_condition_defaults();
-
-void default_constants();
+extern lemlib::Chassis chassis;
 
 void cataDown();
 
