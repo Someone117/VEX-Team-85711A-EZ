@@ -29,9 +29,9 @@ pros::MotorGroup rightMotors({rF, rM, rB});  // right motor group
 pros::Imu imu(6);
 
 // tracking wheels
-pros::ADIEncoder verticalEnc('A', 'B', false);  // ToDo: fix
+// pros::ADIEncoder verticalEnc('A', 'B', false);  // ToDo: fix
 // vertical tracking wheel. 2.75" diameter, 2.2" offset
-lemlib::TrackingWheel vertical(&verticalEnc, 2.75, 0);
+// lemlib::TrackingWheel vertical(&verticalEnc, 2.75, 0);
 
 // drivetrain
 lemlib::Drivetrain_t drivetrain{
@@ -96,7 +96,7 @@ void initialize() {
                                 pros ::E_MOTOR_ENCODER_DEGREES);
   pros::Motor cata_initializer(CATA, pros::E_MOTOR_GEARSET_36, true);
   inake_initializer.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  cata_initializer.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);  // TODO: test
+  cata_initializer.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);  // TODO: test
 
   // Initialize chassis and auton selector
   chassis.calibrate();
@@ -189,7 +189,7 @@ void opcontrol() {
   bool state = LOW;  // wings state
   pros::ADIDigitalOut wings(WINGS);
   // pros::ADIDigitalIn limit_switch(LIMIT);
-  pros::ADIAnalogIn pot(POT);  // do we still need this
+  // pros::ADIAnalogIn pot(POT);  // do we still need this
 
   pros::Motor intake(INTAKE);
   pros::Motor cata(CATA);
@@ -218,18 +218,21 @@ void opcontrol() {
 
     // cata
     // cataDown = limit_switch.get_value();
-    cataDown = pot.get_value() > CATA_THRESHOLD;  // we are using the limit switch
+    // cataDown = pot.get_value() > CATA_THRESHOLD;  // we are using the limit switch
 
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       cata = CATAMAXVOLTAGE;  // fire and continuous fire
     } else {
-      if (cataDown) {
-        cata.brake();  // cata is in position to shoot
-        lemlib::print_to_screen("Down: " + std::to_string(pot.get_value()), 0);
-      } else {
-        cata = CATAVOLTAGE;  // cata is going down
-      }
+      cata.brake();  // coast up
     }
+    // else {
+    //   if (cataDown) {
+    //     cata.brake();  // cata is in position to shoot
+    //     lemlib::print_to_screen("Down: " + std::to_string(pot.get_value()), 0);
+    //   } else {
+    //     cata = CATAVOLTAGE;  // cata is going down
+    //   }
+    // }
 
     // intake
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
