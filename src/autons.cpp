@@ -1,24 +1,14 @@
-#include "../include/autons.hpp"
+/*
+* https://ez-robotics.github.io/EZ-Template/
+*/
 
 #include <string>
-
-#include "..\include\constants.hpp"
+#include "./autons.hpp"
+#include "./constants.hpp"
 #include "main.h"
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
 #include "pros/rtos.hpp"
-
-/////
-// For instalation, upgrading, documentations and tutorials, check out website!
-// https://ez-robotics.github.io/EZ-Template/
-/////
-
-///
-// Constants
-///
-
-// It's best practice to tune constants when the robot is empty and with heavier game objects, or with lifts up vs down.
-// If the objects are light or the cog doesn't change much, then there isn't a concern here.
 
 void cataDown() {
   pros::ADIAnalogIn pot(POT);
@@ -51,7 +41,7 @@ void autoAttack() {
   // // bring cataDown now
   pros::Task cataDownTask(cataDown);
   // drive forward to the center of the field
-  chassis.moveTo()
+  // chassis.set_drive_pid(55, DRIVE_SPEED);
   // chassis.wait_drive();
   // chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees
   // chassis.wait_drive();
