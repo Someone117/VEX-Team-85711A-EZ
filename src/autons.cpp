@@ -38,19 +38,16 @@ void cataUp() {
 
 // start in farthest full starting tile, facing the center of the field
 void autoAttack() {
-  // // bring cataDown now
-  pros::Task cataDownTask(cataDown);
-  // drive forward to the center of the field
-  // chassis.set_drive_pid(55, DRIVE_SPEED);
+  //pros::Task cataDownTask(cataDown); //bring cata down
+  // chassis.set_drive_pid(55, DRIVE_SPEED); //forward to center of goal
   // chassis.wait_drive();
-  // chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees
+  // chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees to face goal
   // chassis.wait_drive();
   // pros::Motor intake(INTAKE);
-  // // score triball given
-  // intake = -127;
+  // intake = -127; //score preload
   // pros::delay(1500);
   // intake = 0;
-  // chassis.set_drive_pid(11, DRIVE_SPEED / 2);
+  // chassis.set_drive_pid(11, DRIVE_SPEED / 2); //shove triball in
   // chassis.wait_drive();
 }
 
