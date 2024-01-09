@@ -49,9 +49,9 @@ void cataUp() {
 // start in farthest full starting tile, facing the center of the field
 void autoAttack() {
   // // bring cataDown now
-  // pros::Task cataDownTask(cataDown);
-  // // drive forward to the center of the field
-  // chassis.set_drive_pid(55, DRIVE_SPEED);
+  pros::Task cataDownTask(cataDown);
+  // drive forward to the center of the field
+  chassis.moveTo()
   // chassis.wait_drive();
   // chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees
   // chassis.wait_drive();
