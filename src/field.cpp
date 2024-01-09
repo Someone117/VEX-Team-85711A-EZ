@@ -2,6 +2,7 @@
  * Field locations for auto
  * Units are inches and degrees
  * Field reference is in the engineering notebook
+ * Blue/Red colors refer to the side of the field
  */
 
 struct Pose2d {
@@ -21,3 +22,16 @@ Pose2d fieldCenter = Pose2d(fieldX / 2.0, fieldY / 2.0);
 
 Pose2d blueElevationHorizontalMid = Pose2d(12, tile * 3);
 Pose2d redElevationHorizontalMid = Pose2d((fieldX - tile / 2.0), tile * 3);
+
+Pose2d blueGoalCenter = Pose2d((fieldX / 2.0), tile);
+Pose2d redGoalCenter = Pose2d((fieldX / 2.0), (fieldY - tile));
+
+Pose2d redLeftCornerTriball = Pose2d((tile / 4.0), (tile / 4.0));
+Pose2d redRightCornerTriball = Pose2d((fieldX - tile / 4.0), (tile / 4.0));
+Pose2d blueLeftCornerTriball = Pose2d((tile / 4.0), (fieldY - tile / 4.0));
+Pose2d blueRightCornerTriball = Pose2d((fieldX - tile / 4.0), (fieldY - tile / 4.0));
+Pose2d blueUnderElevationTriball = Pose2d((tile / 2.0), (fieldY / 2.0));
+Pose2d redUnderElevationTriball = Pose2d((fieldX - tile / 2.0), (fieldY / 2.0));
+
+// triballs near the center of the field
+//Pose2d blueCenterLowerTriball = Pose2d((fieldX / 2.0), );
