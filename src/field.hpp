@@ -3,6 +3,8 @@
  * Units are inches and degrees
  * Field reference is in the engineering notebook
  * Blue/Red colors refer to the side of the field
+ * All positions are relative to the origin
+ * All orientations are relative to facing the red offense side(0 deg);
  */
 
 struct Pose2d {
@@ -51,3 +53,13 @@ Pose2d blueCenterUpperTriball = Pose2d((fieldX / 2.0), (tile * 3 - centerPipeToT
 Pose2d redCenterLowerTriball = Pose2d((fieldX / 2.0), (fieldY / 2.0 + centerPipeToTriballsY));
 Pose2d redCenterRightTriball = Pose2d((fieldX - tile * 2), (fieldY / 2.0 + centerPipeToTriballsY));
 Pose2d redCenterUpperTriball = Pose2d((fieldX / 2.0), (fieldY / 2.0 + tile));
+
+// starting tiles and orientation
+Pose2d redStartUpper = Pose2d((fieldX - tile / 2.0), (fieldY - tile * 1.5));
+Pose2d redStartLower = Pose2d((fieldX - tile / 2.0), (tile * 1.5));
+Pose2d blueStartUpper = Pose2d((tile / 2.0), (fieldY - tile * 1.5));
+Pose2d blueStartLower = Pose2d((tile / 2.0), (tile * 1.5));
+float redStartUpperHeading = -90;
+float redStartLowerHeading = -90;
+float blueStartUpperHeading = 90;
+float blueStartLowerHeading = 90;

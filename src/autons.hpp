@@ -13,6 +13,4 @@ void autoAttack();
 void autoDefense();
 void autoSkills();
 void auto_disabled();
-
-void drive_example();
-void turn_example();
+void autoTest();

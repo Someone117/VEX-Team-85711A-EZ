@@ -1,10 +1,13 @@
 /*
-* https://ez-robotics.github.io/EZ-Template/
-*/
+ * https://ez-robotics.github.io/EZ-Template/
+ */
+
+#include "autons.hpp"
 
 #include <string>
-#include "./autons.hpp"
-#include "./constants.hpp"
+
+#include "constants.hpp"
+#include "field.hpp"
 #include "main.h"
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
@@ -38,17 +41,17 @@ void cataUp() {
 
 // start in farthest full starting tile, facing the center of the field
 void autoAttack() {
-  //pros::Task cataDownTask(cataDown); //bring cata down
-  // chassis.set_drive_pid(55, DRIVE_SPEED); //forward to center of goal
-  // chassis.wait_drive();
-  // chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees to face goal
-  // chassis.wait_drive();
-  // pros::Motor intake(INTAKE);
-  // intake = -127; //score preload
-  // pros::delay(1500);
-  // intake = 0;
-  // chassis.set_drive_pid(11, DRIVE_SPEED / 2); //shove triball in
-  // chassis.wait_drive();
+  // pros::Task cataDownTask(cataDown); //bring cata down
+  //  chassis.set_drive_pid(55, DRIVE_SPEED); //forward to center of goal
+  //  chassis.wait_drive();
+  //  chassis.set_turn_pid(-90, TURN_SPEED);  // Turns right 90 degrees to face goal
+  //  chassis.wait_drive();
+  //  pros::Motor intake(INTAKE);
+  //  intake = -127; //score preload
+  //  pros::delay(1500);
+  //  intake = 0;
+  //  chassis.set_drive_pid(11, DRIVE_SPEED / 2); //shove triball in
+  //  chassis.wait_drive();
 }
 
 // remove triball that is in the match load area
@@ -162,4 +165,11 @@ void autoSkills() {
 }
 
 void auto_disabled() {
+}
+
+// test of the lemlib library
+// starts at red upper
+void autoTest() {
+  chassis.setPose(redStartUpper.x, redStartUpper.y, redStartLowerHeading);
+  chassis.moveTo(blueCenterUpperTriball.x, blueCenterUpperTriball.y, 5000);
 }
