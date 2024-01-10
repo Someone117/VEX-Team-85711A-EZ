@@ -1,5 +1,6 @@
 /*
- * https://ez-robotics.github.io/EZ-Template/
+ * EZ Template: https://ez-robotics.github.io/EZ-Template/
+ * Lemlib: https://lemlib.github.io/LemLib/index.html
  */
 
 #include "autons.hpp"
