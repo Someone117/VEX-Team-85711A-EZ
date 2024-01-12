@@ -1,9 +1,9 @@
 #include "main.h"
 
-#include "..\include\constants.hpp"
 #include "EZ-Template/auton.hpp"
 #include "EZ-Template/auton_selector.hpp"
 #include "autons.hpp"
+#include "constants.hpp"
 #include "lemlib/api.hpp"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
@@ -88,7 +88,8 @@ void initialize() {
                              Auton("Auto Defense\n\nStart in closest tile, touching the match load area, no triball",
                                    autoDefense),
                              Auton("disabled", auto_disabled),
-                             Auton("Auto Skills\n\nSetup like autoDefense, with triballs galore", autoSkills)});
+                             Auton("Auto Skills\n\nSetup like autoDefense, with triballs galore", autoSkills),
+                             Auton("Auto Test", autoTest)});
 
   pros::ADIDigitalOut wings_initializer(WINGS, LOW);
 
